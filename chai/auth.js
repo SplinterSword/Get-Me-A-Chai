@@ -27,7 +27,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
         async session({ session, user, token }) {
             const client = await mongoose.connect(`mongodb://localhost:27017/chai`)
-            const dbUser = await User.findOne({email: session.user.email})
+            const dbUser = await User.findOne({useremail: session.user.email})
+            session.user.name = dbUser.username;
             return session
         },
       }
