@@ -1,15 +1,27 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Script from "next/script";
 import Image from 'next/image'
-import { initiate } from "@/actions/useractions";
+import { fetchpayments, initiate, fetchuser } from "@/actions/useractions";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 
 const Payment = ({username}) => {
     const [paymentform, setPaymentform] = useState({})
     const session = useSession()
+    const [currentuser, setCurrentuser] = useState({})
+    const [payments, setPayments] = useState([])
+
+    useEffect (() => {
+      getData()
+    },[])
     
+    const getData = async (params) => {
+      let u = await fetchuser(username)
+      setCurrentuser(u)
+      let dbpayments = await fetchpayments(username)
+      setPayments(dbpayments)
+    }
     const handleChange = (e) => {
         setPaymentform({...paymentform,[e.target.name]: e.target.value})
     }
@@ -70,24 +82,14 @@ const Payment = ({username}) => {
             {/* Leaderboard */}
             <h2 className='text-2xl font-bold my-5'>Supporters</h2>
             <ul className='mx-5 font-lg'>
-              <li className='my-4 flex gap-2 items-center'>
+              {payments.map((p,i) => {
+                return <li className='my-4 flex gap-2 items-center'>
                 <Image unoptimized="true" width={33} height={33} src="/avatar.gif" alt="" />
                 <div>
-                  Shubham donated <span className='font-bold'>$30</span> with a message "I support you bro. lots of ❤️"
+                  {p.name} donated <span className='font-bold'>₹{p.amount/100}</span> with a message "{p.message}"
                 </div>
               </li>
-              <li className='my-4 flex gap-2 items-center'>
-                <Image unoptimized="true" width={33} height={33} src="/avatar.gif" alt="" />
-                <div>
-                  Shubham donated <span className='font-bold'>$30</span> with a message "I support you bro. lots of ❤️"
-                </div>
-              </li>
-              <li className='my-4 flex gap-2 items-center'>
-                <Image unoptimized="true" width={33} height={33} src="/avatar.gif" alt="" />
-                <div>
-                  Shubham donated <span className='font-bold'>$30</span> with a message "I support you bro. lots of ❤️"
-                </div>
-              </li>
+              })}
             </ul>
           </div>
           <div className="makePayment w-1/2 bg-slate-900 rounded-lg p-10">
@@ -96,7 +98,7 @@ const Payment = ({username}) => {
               <input onChange={handleChange} name="name" value={paymentform.name} type="text" className='w-full p-3 rounded-lg bg-slate-800' placeholder='Name'/>
               <input onChange={handleChange} name="message" value={paymentform.message} type="text" className='w-full p-3 rounded-lg bg-slate-800' placeholder='Message'/>
               <input onChange={handleChange} name="amount" value={paymentform.amount} type="text" className='w-full p-3 rounded-lg bg-slate-800' placeholder='Amount'/>
-              <button className='text-white w-full bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2'>Pay</button>
+              <button onClick={async ()=>{pay(Number.parseInt(paymentform.amount*100))}} className='text-white w-full bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2'>Pay</button>
             </div>
             {/* Or Choose from these Amounts */}
             <div className="flex gap-2 mt-5">
