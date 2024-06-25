@@ -1,10 +1,12 @@
 import React from 'react'
+import Payment from '@/components/Payment'
+
 
 const Username = ({params}) => {
   return (
-    <div>
-        
-    </div>
+    <>
+      <Payment username={params.username}/>
+    </>
   )
 }
 
