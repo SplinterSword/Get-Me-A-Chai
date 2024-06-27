@@ -8,7 +8,7 @@ import { fetchuser } from '@/actions/useractions'
 const Navbar =  () => {
   const session = useSession();
   return (
-    <nav className='bg-gray-900 text-white flex justify-between items-center px-4 h-16'>
+    <nav className='bg-gray-900 text-white flex justify-between items-center px-4 md:h-16 flex-col md:flex-row'>
         <div className="logo font-bold text-lg flex justify-center items-center">
           <Image unoptimized={true} width={44} height={44} src="/logo.gif" alt="" />
           <Link href="/"><span>GetMeaChai!</span></Link>

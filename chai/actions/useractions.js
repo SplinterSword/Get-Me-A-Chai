@@ -38,7 +38,7 @@ export const fetchuser = async (username) => {
 export const fetchpayments = async (username) => {
     const client = await mongoose.connect(`mongodb://localhost:27017/chai`)
     // find all payments sorted by decreasing order of amount and flatten objects ids
-    let p = await Payment.find({to_user: username, done: true}).sort({amount: -1}).lean()
+    let p = await Payment.find({to_user: username, done: true}).sort({amount: -1}).limit(10).lean()
     return p;
 }
 

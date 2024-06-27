@@ -98,8 +98,8 @@ const Payment = ({username}) => {
 
       <div className='cover w-full bg-red-50 relative'>
         <img className="object-cover w-full h-[350px]" src={currentuser.coverpic} alt="" />
-        <div className='absolute -bottom-14 right-[47%] border-2 overflow-hidden border-white rounded-full'>
-          <Image className='rounded-full' width={100} height={100} src={currentuser.profilepic} alt="" />
+        <div className='absolute -bottom-14 right-[47%] border-2 overflow-hidden border-white rounded-full '>
+          <img className='rounded-full object-cover size-20' width={100} height={100} src={currentuser.profilepic} alt="" />
         </div>
       </div>
       <div className="info flex flex-col gap-2 justify-center items-center my-20 ">
@@ -107,16 +107,16 @@ const Payment = ({username}) => {
           @{currentuser.username}
         </div>
         <div className='text-slate-400'>
-          Created Animated art for VTT's
+          Lets help {currentuser.username} get a chai
         </div>
         <div className='text-slate-400'>
-          9,716 members . 82 post . ₹15,450/release
+          {payments.length} Payments. ₹{payments.reduce((a,b) => a+b.amount,0)} raised
         </div>
 
         <div className="payment flex gap-3 w-[80%] mt-11">
           <div className="supporters w-1/2 bg-slate-900 rounded-lg p-10">
             {/* Leaderboard */}
-            <h2 className='text-2xl font-bold my-5'>Supporters</h2>
+            <h2 className='text-2xl font-bold my-5'>Top 10 Supporters</h2>
             <ul className='mx-5 font-lg'>
               {payments.length == 0 && <li>No Payments Yet</li>}
               {payments.map((p,i) => {
@@ -135,7 +135,7 @@ const Payment = ({username}) => {
               <input onChange={handleChange} name="name" value={paymentform.name} type="text" className='w-full p-3 rounded-lg bg-slate-800' placeholder='Name'/>
               <input onChange={handleChange} name="message" value={paymentform.message} type="text" className='w-full p-3 rounded-lg bg-slate-800' placeholder='Message'/>
               <input onChange={handleChange} name="amount" value={paymentform.amount} type="text" className='w-full p-3 rounded-lg bg-slate-800' placeholder='Amount'/>
-              <button onClick={async ()=>{pay(Number.parseInt(paymentform.amount*100))}} className='text-white w-full bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 disabled:from-purple-500' disabled={paymentform.name?.length<3 || paymentform.message?.length < 4}>Pay</button>
+              <button onClick={async ()=>{pay(Number.parseInt(paymentform.amount*100))}} className='text-white w-full bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 disabled:from-purple-500' disabled={paymentform.name?.length<3 || paymentform.message?.length < 4 || paymentform.amount?.length < 1}>Pay</button>
             </div>
             {/* Or Choose from these Amounts */}
             <div className="flex gap-2 mt-5">
